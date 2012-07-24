@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ year }}-{{ month }}</h2>
+<ul>
+  {% for day in days %}
+  <li><a href="{{ day }}/">{{ day }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
