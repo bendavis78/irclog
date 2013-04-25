@@ -1,9 +1,10 @@
+#!/usr/bin/env python
 import sys
 import os
 import glob
 import re
 from datetime import datetime
-from flask import Flask, render_template
+from flask import Flask, Response, render_template
 
 app = Flask(__name__)
 
@@ -12,8 +13,18 @@ DEBUG = True
 LOG_DIR = sys.argv[1]
 SERVER = sys.argv[2]
 CHAN = sys.argv[3]
+PUBLIC = len(sys.argv) > 4 and sys.argv[4] == '--public'
 
 app.config.from_object(__name__)
+
+@app.route('/robots.txt')
+def robots():
+    if not app.config.get('PUBLIC', False):
+        response = 'User-agent: *\nDisallow: /'
+    else:
+        response = ''
+
+    return Response(response, mimetype='text/plain')
 
 @app.route('/')
 def index():
